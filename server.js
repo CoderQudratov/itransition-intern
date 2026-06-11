@@ -15,18 +15,11 @@ const server = http.createServer((req, res) => {
     }
 
     res.end(String(result));
-
-
-
-
-
-
 })
 
-server.listen(PORT, 'localhost', () => {
-    console.log("server is running");
-
-})
+server.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+});
 function checkUrl(url) {
     const seperateArr = url.split("&")
     let result;
