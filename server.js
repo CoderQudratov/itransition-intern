@@ -1,5 +1,6 @@
 const http = require('http');
 let correct_gmail = "/coderqudratov_gmail_com";
+const PORT = process.env.PORT || 3000;
 const server = http.createServer((req, res) => {
     res.writeHead(200, { "Content-Type": "text/plain" })
     const url = req.url;
@@ -22,7 +23,7 @@ const server = http.createServer((req, res) => {
 
 })
 
-server.listen(3000, 'localhost', () => {
+server.listen(PORT, 'localhost', () => {
     console.log("server is running");
 
 })
