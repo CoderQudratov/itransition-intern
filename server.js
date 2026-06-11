@@ -1,8 +1,12 @@
+
 const http = require('http');
+
 let correct_gmail = "/coderqudratov_gmail_com";
 const PORT = process.env.PORT || 3000;
+
 const server = http.createServer((req, res) => {
-    res.writeHead(200, { "Content-Type": "text/plain" })
+    res.writeHead(200, { "Content-Type": "text/plain" });
+
     const url = req.url;
     let result = "NaN";
 
@@ -15,13 +19,14 @@ const server = http.createServer((req, res) => {
     }
 
     res.end(String(result));
-})
+});
 
 server.listen(PORT, () => {
     console.log(`Server is running on port ${PORT}`);
 });
+
 function checkUrl(url) {
-    const seperateArr = url.split("&")
+    const seperateArr = url.split("&");
     let result;
 
     if (seperateArr.length == 2) {
@@ -31,37 +36,35 @@ function checkUrl(url) {
 
         const yArr = seperateArr[1]
             ? seperateArr[1].split("=")
-            : []; const
-                x = Number(xArr[1])
-        const y = Number(yArr[1])
+            : [];
 
-        if (!Number.isNaN(x) && !Number.isNaN(y) && x > 0 && y > 0 && Number.isInteger(x) && Number.isInteger(y)) {
-            if (xArr[0] == "x" && yArr[0] == "y") {
-                result = findEKUK(x, y);
-            } else if (
-                xArr[0] == "y" && yArr[0] == "x"
-            ) {
-                result = findEKUK(y, x);
+        let x, y;
 
-            }
-
+        try {
+            x = BigInt(xArr[1]);
+            y = BigInt(yArr[1]);
+        } catch {
+            return "NaN";
         }
 
-
+        if (x > 0n && y > 0n) {
+            if (xArr[0] == "x" && yArr[0] == "y") {
+                result = findEKUK(x, y);
+            } else if (xArr[0] == "y" && yArr[0] == "x") {
+                result = findEKUK(y, x);
+            }
+        }
     }
-
-
-
-
 
     if (result === undefined) {
         return "NaN";
     }
 
-    return result;
+    return result.toString();
 }
+
 function findEKUB(a, b) {
-    while (b !== 0) {
+    while (b !== 0n) {
         let temp = b;
         b = a % b;
         a = temp;
@@ -70,10 +73,9 @@ function findEKUB(a, b) {
 }
 
 function findEKUK(a, b) {
-
-    if (a === 0 || b === 0) {
-        return 0;
+    if (a === 0n || b === 0n) {
+        return 0n;
     }
 
-    return Math.abs((a * b) / findEKUB(a, b));
+    return (a * b) / findEKUB(a, b);
 }
